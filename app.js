@@ -59,7 +59,9 @@ router.post("/auth", async (req, res) => {
     token: jwt.sign({ userId: user.userId }, "secret-secret-key"),
   });
 });
-//로그인 했는지
+/*
+로그인 되어 있는지
+*/
 router.get("/users/me", authMiddleware, async (req, res) => {
   res.send({ use: res.locals.user });
 });
