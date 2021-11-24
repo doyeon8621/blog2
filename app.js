@@ -2,6 +2,8 @@ const express = require("express");
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 const User = require("./models/user");
+const authMiddleware = require("./middlewares/auth-middleware");
+
 const mongoose = require("mongoose");
 
 mongoose.connect("mongodb://localhost/blog-demo", {
@@ -13,7 +15,9 @@ db.on("error", console.error.bind(console, "connection error:"));
 
 const app = express();
 const router = express.Router();
-//회원가입
+/*
+회원가입
+*/
 router.post("/users", async (req, res) => {
   const { nickname, password, email, confirmPassword } = req.body;
   if (password !== confirmPassword) {
@@ -34,10 +38,33 @@ router.post("/users", async (req, res) => {
   }
   const user = new User({ email, nickname, password });
   await user.save();
-  //201은 create를 뜻한다.
+  //201은 created를 뜻한다.
   res.status(201).send({ result: "success" });
 });
+/*
+로그인
+*/
+//Authenticate를 줄인 단어인데, 로그인 한다는 행위 자체를 "사용자가 자신의 정보를 인증한다" 라고 보기 때문에
+// 일반적으로 로그인에 자주 사용되는 경로!
+router.post("/auth", async (req, res) => {
+  const { email, password } = req.body;
 
+  const user = await User.findOne({ email }).exec();
+
+  if (!user || password !== user.password) {
+    res.status(400).send({
+      errorMessage: "이메일 또는 패스워드가 틀렸습니다.",
+    });
+    return;
+  }
+  res.send({
+    token: jwt.sign({ userId: user.userId }, "secret-secret-key"),
+  });
+});
+//로그인 했는지
+router.get("/users/me", authMiddleware, async (req, res) => {
+  res.send({ use: res.locals.user });
+});
 app.use("/api", express.urlencoded({ extended: false }), router);
 app.use(express.static("assets"));
 
