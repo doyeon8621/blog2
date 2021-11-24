@@ -62,7 +62,7 @@
               placeholder="아이디"
               aria-label="Username"
               aria-describedby="basic-addon1"
-              id="inputEmail"
+              id="inputNickname"
             />
           </div>
           <div class="input-group mb-3">
@@ -160,20 +160,20 @@
 
     <script>
       if (localStorage.getItem("token")) {
-        getSelf(function () {
-          alert("이미 로그인이 되어있습니다. 상품 페이지로 이동합니다.");
-          window.location.replace("/list.html");
-        });
+        // getSelf(function () {
+        //   alert("이미 로그인이 되어있습니다. 상품 페이지로 이동합니다.");
+        //   window.location.replace("/list.html");
+        // });
       }
 
       function sign_in() {
-        let email = $("#inputEmail").val();
+        let nickname = $("#inputNickname").val();
         let password = $("#inputPassword").val();
         $.ajax({
           type: "POST",
           url: "/api/auth",
           data: {
-            email: email,
+            nickname: nickname,
             password: password,
           },
           success: function (response) {

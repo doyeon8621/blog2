@@ -64,26 +64,6 @@
               </div>
             </div>
             <div class="form-group row">
-              <label for="inputEmail" class="col-sm-4 col-form-label"
-                >이메일</label
-              >
-              <div class="col-sm-8">
-                <div class="input-group">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="inputEmail"
-                    placeholder="email@email.com"
-                  />
-                  <!--                                    <div class="input-group-append">-->
-                  <!--                                        <button class="btn btn-outline-sparta" type="button">중복확인</button>-->
-                  <!--                                    </div>-->
-                </div>
-
-                <!--                                <small id="emailHelp" class="form-text text-muted">입력 후 중복확인 버튼을 클릭해주세요.</small>-->
-              </div>
-            </div>
-            <div class="form-group row">
               <label for="inputPassword1" class="col-sm-4 col-form-label"
                 >비밀번호</label
               >
@@ -192,7 +172,6 @@
     <script>
       function sign_up() {
         const nickname = $("#inputNickname").val();
-        const email = $("#inputEmail").val();
         const password1 = $("#inputPassword1").val();
         const password2 = $("#inputPassword2").val();
 
@@ -201,7 +180,6 @@
           url: "/api/users",
           data: {
             nickname: nickname,
-            email: email,
             password: password1,
             confirmPassword: password2,
           },
